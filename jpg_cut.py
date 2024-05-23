@@ -7,8 +7,11 @@ output_dir = 'small_high_res'
 # Path to the folder containing the jpg images
 input_dir = 'jpg'
 
-count = 1
 
+# Determines the on overlap of the images
+overlap_factor = 2
+
+count = 1
 # Loop through all files in the input directory
 for filename in os.listdir(input_dir):
 
@@ -24,16 +27,16 @@ for filename in os.listdir(input_dir):
         img_width, img_height = img.size
         
         # Compute number of 100x100 blocks
-        x_blocks = img_width // 100
-        y_blocks = img_height // 100
+        x_blocks = overlap_factor * img_width // 100
+        y_blocks = overlap_factor * img_height // 100
         
         # Generate 100x100 subsets
         for i in range(x_blocks):
             for j in range(y_blocks):
-                left = i * 100
-                upper = j * 100
-                right = left + 100
-                lower = upper + 100
+                left = i * 100 / overlap_factor
+                upper = j * 100 / overlap_factor
+                right = left + 100 / overlap_factor
+                lower = upper + 100 / overlap_factor
                 bbox = (left, upper, right, lower)
                 
                 # Crop the image
